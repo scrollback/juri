@@ -34,3 +34,6 @@ var kramer = require('./kramer.js')({
 	var decoded = kramer.decode(encoded);
 
 ```
+
+Compression achieved depends greatly on picking the right dictionaries and psets. For the (rather unoptimized) example above, encode generates the string `)uSg,*ASypdCG,$E($Atx506jZ,.*BdSwSyXQpS6Ek,ZVI9WXGj0Kw,.l0A,*AV0I0uG,$E(o1IdCTH,$D$C.*BYQ6kehGqQwS+jGlg,ZVJc+OCXy6EurWj1A,_Y,.`
+which is 27% of the size of the naive approach (`encodeURIComponent(JSON.stringify(data))`).
