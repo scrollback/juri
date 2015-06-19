@@ -83,24 +83,26 @@ module.exports = function(dictionary) {
 
 		if(dictionary) {
 			s = s.replace(dictReg, function (m) {
-				return "*" + encMap[m];
+				return encMap[m] + "*";
 			});
 		}
 
-		return s.replace(/[^0-9a-zA-Z$@*]+(\*[0-9a-zA-Z$@][^0-9a-zA-Z$@]*)*/g, function (run) {
+		return s.replace(/[^0-9a-zA-Z$@*]+([0-9a-zA-Z$@]\*[^0-9a-zA-Z$@]*)*/g, function (run) {
 			var i, m, n, r = "", u = false;
-			console.log("replacing ", run);
 			
 			for(i = 0; i < run.length; i++) {
 				m = run[i];
+
+				if(run[i+1] === "*") {
+					r += m + "*";
+					i++;
+					continue;
+				}
 
 				if(m === " ") {
 					r += "_";
 				} else if(m === ".") {
 					r += ".";
-				} else if(m === "*") {
-					r += "*";
-					if(run[i + 1]) { r += run[i + 1]; i++; }
 				} else if ((n = commonSpl.indexOf(m)) >= 0) {
 					r += "~" + chars[n];
 				} else {
@@ -118,8 +120,9 @@ module.exports = function(dictionary) {
 	function decodeString(s) {
 		if(s === "''") { return ""; }
 
-		s = s.replace(/\*./g, function (m) {
-			return "'*" + decMap[m[1]] + "'";
+		s = s.replace(/[0-9a-zA-Z$@]\*/g, function (m) {
+			console.log("looking up", m, decMap[m[0]]);
+			return "'*" + decMap[m[0]] + "'";
 		});
 
 		return s.split("'").map(function (run, j) {

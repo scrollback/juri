@@ -1,13 +1,13 @@
-var dict = [ "red", "blue", "green", "white",
+var dict = [ "red", "yellow", "orange", "blue", "green", "white",
 	"Asia", "North America", "South America",
 	"name", "continent", "flagColors",
-	"leader", "title", "term", "平" ],
-	kramer = require("./k2.js")(dict),
+	"leader", "title", "term", "population", "平" ],
+	kramer = require("./kramer.js")(dict),
     data = {
         zh: {
             name: "China", continent: "Asia",
             flagColors: ["red", "yellow"],
-            leader: { name: "Xi Jinping (习 近.平习)", title: "President", term: 137 },
+            leader: { name: "习 近平-习", title: "President", term: 137 },
 			population: 1.37E9
         },
         in: {
@@ -27,7 +27,13 @@ console.log("Original: ", data);
 console.log("Encoded: ", encoded);
 console.log("Decoded: ", decoded);
 console.log(json == JSON.stringify(decoded)? "Correct": "Incorrect");
-console.log("Crammed into ", Math.round(encoded.length * 10000 / json.length)/100 + "% of URL encoded JSON");
+console.log(
+	"Compressed to " +
+	Math.round(encoded.length * 10000 / json.length)/100 +
+	"% of plain JSON and " +
+	Math.round(encoded.length * 10000 / encodeURIComponent(json).length)/100 +
+	"% of URL-encoded JSON"
+);
 
 
 
