@@ -52,7 +52,6 @@ A dictionary of up to 64 commonly repeated strings (e.g. key names, enum values,
 For example,
 
 ```javascript
-<<<<<<< HEAD
 [ "red", "yellow", "orange", "blue", "green", "white",
 	"Asia", "North America", "South America",
 	"name", "continent", "flagColors",
