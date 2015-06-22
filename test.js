@@ -2,7 +2,7 @@ var dict = [ "red", "yellow", "orange", "blue", "green", "white",
 	"Asia", "North America", "South America",
 	"name", "continent", "flagColors",
 	"leader", "title", "term", "population", "平" ],
-	kramer = require("./kramer.js")(dict),
+	kramer = require("./juri.js")(dict),
     data = {
         zh: {
             name: "China", continent: "Asia",

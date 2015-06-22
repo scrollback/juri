@@ -1,0 +1,23 @@
+{
+  "name": "juri",
+  "version": "1.0.0",
+  "description": "Encode JSON into compact, readable URL-safe strings",
+  "main": "juri.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scrollback/kramer.git"
+  },
+  "keywords": [
+    "json",
+    "url-encode"
+  ],
+  "author": "scrollback",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/scrollback/kramer/issues"
+  },
+  "homepage": "https://github.com/scrollback/kramer#readme"
+}
