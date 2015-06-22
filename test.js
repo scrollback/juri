@@ -14,10 +14,10 @@ var dict = [ "red", "yellow", "orange", "blue", "green", "white",
             name: "India", continent: "", a: true, b: false, c: null,
 			emptyArray: [], emptyObject: {},
             flagColors: ["orange", "white", "green"],
-            leader: { name: "Narendra\nModi.", title: "Prime Minister", term: 119 },
+            leader: { name: "Narendra\nModi.", undef: undefined, title: "Prime Minister", term: 119 },
 			population: 1.19E9
         },
-		array: ["asdf", [3, 4]]
+		array: ["asdf", [3, undefined, 4]]
     },
 	encoded = kramer.encodeQString(data),
 	decoded = kramer.decodeQString(encoded),

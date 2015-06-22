@@ -93,7 +93,7 @@ module.exports = function(dictionary) {
 			for(i = 0; i < run.length; i++) {
 				m = run[i];
 
-				if(run[i+1] === "*") {
+				if(run[i + 1] === "*") {
 					r += m + "*";
 					i++;
 					continue;
@@ -187,13 +187,15 @@ module.exports = function(dictionary) {
 		var i, s = [];
 		if(Array.isArray(value)) {
 			for(i = 0; i < value.length; i++) {
-				s.push(encode(value[i]));
+				s.push(encode(typeof value[i] === "undefined" ? null : value[i]));
 			}
 		} else {
 			if (!Object.keys(value).length && !qStr) { s.push(":"); }
 
 			for(i in value) {
-				s.push(encodeString(i) + (qStr ? "=" : ":") + encode(value[i]));
+				if(typeof value[i] !== "undefined") {
+					s.push(encodeString(i) + (qStr ? "=" : ":") + encode(value[i]));
+				}
 			}
 		}
 		return qStr ? s.join("&") : "(" + s.join(",") + ")";
