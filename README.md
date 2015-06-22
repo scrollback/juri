@@ -1,9 +1,9 @@
 juri
 ====
 
-Compresses JSON objects into compact, human readable, juri-safe strings
+Encodes JSON objects into compact, human readable strings that are safe for use in URIs.
 
-Juri is exported as a CommonJS module. For use on the client, use browserify.
+Juri works with Node.js and with browserify.
 
 Installation
 ------------
@@ -90,17 +90,18 @@ It’s still somewhat human readable: n* is name, c* is country etc. This exampl
 Differences from Rison
 ----------------------
 
-The motivation behind Juri is the same as that behind [Rison](/Nanonid/rison), and it also uses the characters `(:,)`, but improves upon it in many ways.
+Juri is similar to [Rison](https://github.com/Nanonid/rison) but improves upon it
+in many ways.
 
-- Strings are unquoted and encoded efficiently. Spaces are replaced with underscores
-  (not `%20`), punctuation uses two-byte escape sequences instead of 3-byte percent
-  encoding, and runs of non-latin characters are encoded with modified Base64 which
-  takes about 40% less space than percent-encoding.
+- Strings are unquoted and encoded efficiently instead of relying on percent-
+  encoding. Spaces are replaced with underscores (not `%20`), punctuation uses
+  two-byte escape sequences, and runs of non-latin characters are encoded with
+  Base64 which takes about 40% less space than percent-encoding.
 
 - Numbers are encoded with modified Base64 alphabet whose first 16 characters are
   0-9 and A-F. This keeps small numbers human readable while large ones (like
-  timestamps) are encoded efficiently. All numbers are prefixed with a sign
-  (`+` or `-`) and use exponent notation where it's shorter.
+  timestamps) are represented with 50% fewer bytes. All numbers are prefixed with 
+  a sign (`+` or `-`) and use exponent notation where it's shorter.
 
 - Juri does not require special markers like `!(...)` to distinguish between
   objects and arrays; this saves characters in deeply nested structures and
