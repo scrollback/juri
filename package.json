@@ -1,6 +1,6 @@
 {
   "name": "juri",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Encode JSON into compact, readable URL-safe strings",
   "main": "juri.js",
   "scripts": {

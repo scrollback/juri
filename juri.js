@@ -147,14 +147,14 @@ module.exports = function(dictionary) {
 	}
 
 	function encodeNumber(value) {
-		var s = "", parts, sig, exp;
+		var s = "", parts, sig, exp = 0;
 		s += (value < 0 ? "-" : "+");
 
 		parts = value.toString();
 		if(value.toExponential().length < parts.length) {
 			parts = value.toExponential();
 		}
-
+		
 		parts = parts.split(/[eE]/g);
 		if(parts[1]) { exp = parseInt(parts[1]); }
 
@@ -167,7 +167,7 @@ module.exports = function(dictionary) {
 			exp += m.length;
 			return "";
 		});
-
+		
 		s += (encodeInteger(parseInt(sig)) || "0");
 
 		if(exp) { s += (exp < 0 ? "-" : "+") + encodeInteger(Math.abs(exp)); }

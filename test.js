@@ -8,7 +8,7 @@ var dict = [ "red", "yellow", "orange", "blue", "green", "white",
             name: "China", continent: "Asia",
             flagColors: ["red", "yellow"],
             leader: { name: "习 近平-习", title: "President", term: 137 },
-			population: 1.37E9
+			population: 1434440076830
         },
         in: {
             name: "India", continent: "", a: true, b: false, c: null,
