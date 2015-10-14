@@ -184,15 +184,18 @@ module.exports = function(dictionary) {
 	}
 
 	function encodeCollection (value, qStr) {
-		var i, s = [];
+		var i, s = [], j, k;
 		if(Array.isArray(value)) {
 			for(i = 0; i < value.length; i++) {
 				s.push(encode(typeof value[i] === "undefined" ? null : value[i]));
 			}
 		} else {
-			if (!Object.keys(value).length && !qStr) { s.push(":"); }
-
-			for(i in value) {
+			k = Object.keys(value).sort();
+			
+			if (!k.length && !qStr) { s.push(":"); }
+			
+			for(j = 0; j < k.length; j++) {
+				i = k[j];
 				if(typeof value[i] !== "undefined") {
 					s.push(encodeString(i) + (qStr ? "=" : ":") + encode(value[i]));
 				}
