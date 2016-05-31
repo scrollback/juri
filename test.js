@@ -1,3 +1,5 @@
+var assert = require("assert");
+
 var dict = [ "red", "yellow", "orange", "blue", "green", "white",
 	"Asia", "North America", "South America",
 	"name", "continent", "flagColors",
@@ -15,7 +17,11 @@ var dict = [ "red", "yellow", "orange", "blue", "green", "white",
 			emptyArray: [], emptyObject: {},
             flagColors: ["orange", "white", "green"],
             leader: { name: "Narendra\nModi.", undef: undefined, title: "Prime Minister", term: 119 },
-			population: 1.19E9
+			population: 1.19E9,
+			nan: NaN,
+			infi: Infinity,
+			neginf: -Infinity,
+			nul: null
         },
 		array: ["asdf", [3, undefined, 4]]
     },
@@ -26,7 +32,7 @@ var dict = [ "red", "yellow", "orange", "blue", "green", "white",
 console.log("Original: ", data);
 console.log("Encoded: ", encoded);
 console.log("Decoded: ", decoded);
-console.log(json == JSON.stringify(decoded)? "Correct": "Incorrect");
+assert.deepEqual(data, decoded);
 console.log(
 	"Compressed to " +
 	Math.round(encoded.length * 10000 / json.length)/100 +
@@ -34,6 +40,3 @@ console.log(
 	Math.round(encoded.length * 10000 / encodeURIComponent(json).length)/100 +
 	"% of URL-encoded JSON"
 );
-
-
-

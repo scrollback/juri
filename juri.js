@@ -5,19 +5,22 @@ var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz$@",
 
 /*
 	Use of other URL-safe characters
-	
+
 	.	Dot in strings
 	_	Spaces in strings
-	
+
 	-	Value: Start of negative number
 		In numbers, negative exponent
 		-- is false
+		-* is -Infinity
 		-+ is null
 
 	+	Value: Start of positive number
 		In numbers, positive exponent
 		++ is true
-		+- is null
+		+* is +Infinity
+		+- is undefined
+		+! is NaN
 
 	!	(unused)
 	'	In strings, toggles base64-encoded-unicode mode
@@ -34,7 +37,7 @@ var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz$@",
 
 module.exports = function(dictionary) {
 	var encMap = {}, decMap = {}, dictReg;
-	
+
 	if(Array.isArray(dictionary)) {
 		dictionary.splice(64);
 
@@ -63,7 +66,7 @@ module.exports = function(dictionary) {
 	} else {
 		dictionary = null;
 	}
-	
+
 	function encodeInteger(t) {
 		var s = "";
 		while(t) { s = chars[t % 64] + s; t = Math.floor(t / 64); }
@@ -89,7 +92,7 @@ module.exports = function(dictionary) {
 
 		return s.replace(/[^0-9a-zA-Z$@*]+([0-9a-zA-Z$@]\*[^0-9a-zA-Z$@]*)*/g, function (run) {
 			var i, m, n, r = "", u = false;
-			
+
 			for(i = 0; i < run.length; i++) {
 				m = run[i];
 
@@ -154,7 +157,7 @@ module.exports = function(dictionary) {
 		if(value.toExponential().length < parts.length) {
 			parts = value.toExponential();
 		}
-		
+
 		parts = parts.split(/[eE]/g);
 		if(parts[1]) { exp = parseInt(parts[1]); }
 
@@ -167,7 +170,7 @@ module.exports = function(dictionary) {
 			exp += m.length;
 			return "";
 		});
-		
+
 		s += (encodeInteger(parseInt(sig)) || "0");
 
 		if(exp) { s += (exp < 0 ? "-" : "+") + encodeInteger(Math.abs(exp)); }
@@ -187,13 +190,13 @@ module.exports = function(dictionary) {
 		var i, s = [], j, k;
 		if(Array.isArray(value)) {
 			for(i = 0; i < value.length; i++) {
-				s.push(encode(typeof value[i] === "undefined" ? null : value[i]));
+				s.push(encode(value[i]));
 			}
 		} else {
 			k = Object.keys(value).sort();
-			
+
 			if (!k.length && !qStr) { s.push(":"); }
-			
+
 			for(j = 0; j < k.length; j++) {
 				i = k[j];
 				if(typeof value[i] !== "undefined") {
@@ -212,13 +215,13 @@ module.exports = function(dictionary) {
 
 			throw new SyntaxError("Unexpected " + c + " at " + i + " in " + string);
 		}
-		
+
 		function terminate(expectedMode, preserve) {
 			mode = mode || expectedMode;
 
 			if(!out) { out = (mode === "key" ? {} : []); }
 			if(start === i) { return; }
-			
+
 			if(mode === "key") {
 				key = decodeString(string.substring(start, i));
 				mode = "value";
@@ -270,14 +273,19 @@ module.exports = function(dictionary) {
 	function encode (value, qStr) {
 		switch(typeof value) {
 			case "object":
-				if(value === null) { return "+-"; }
+				if(value === null) { return "-+"; }
 				return encodeCollection(value, qStr);
 			case "string":
 				return encodeString(value);
 			case "number":
+				if (isNaN(value)) { return "+!"; }
+				if (value === +Infinity) { return "+*"; }
+				if (value === -Infinity) { return "-*"; }
 				return encodeNumber(value);
 			case "boolean":
 				return value ? "++" : "--";
+			case "undefined":
+				return "+-";
 			default:
 				return "";
 		}
@@ -289,12 +297,15 @@ module.exports = function(dictionary) {
 			case "(":
 				return decodeCollection(string);
 			case "-":
-				if(string[1] === "-") { return false; }
-				if(string[1] === "+") { return null; }
+				if (string[1] === "-") { return false; }
+				if (string[1] === "+") { return null; }
+				if (string[1] === "*") { return -Infinity; }
 				return decodeNumber(string);
 			case "+":
-				if(string[1] === "-") { return null; }
-				if(string[1] === "+") { return true; }
+				if (string[1] === "-") { return undefined; }
+				if (string[1] === "!") { return NaN; }
+				if (string[1] === "+") { return true; }
+				if (string[1] === "*") { return Infinity; }
 				return decodeNumber(string);
 			default:
 				return decodeString(string);
@@ -319,4 +330,3 @@ module.exports = function(dictionary) {
 	};
 
 };
-
