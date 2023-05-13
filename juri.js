@@ -124,7 +124,6 @@ module.exports = function(dictionary) {
 		if(s === "''") { return ""; }
 
 		s = s.replace(/[0-9a-zA-Z$@]\*/g, function (m) {
-			console.log("looking up", m, decMap[m[0]]);
 			return "'*" + decMap[m[0]] + "'";
 		});
 
@@ -171,7 +170,7 @@ module.exports = function(dictionary) {
 			return "";
 		});
 
-		s += (encodeInteger(parseInt(sig)) || "0");
+		s += (encodeInteger(Math.abs(parseInt(sig))) || "0");
 
 		if(exp) { s += (exp < 0 ? "-" : "+") + encodeInteger(Math.abs(exp)); }
 
